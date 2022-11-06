@@ -52,7 +52,7 @@ public class RestData {
 			response.setDate(estado.getDate());
 			response.setActive(estado.getActive());
 			confirmed += estado.getConfirmed();
-			death += estado.getDeaths();
+			death += estado.gestDeaths();
 			recovered += estado.getRecovered();
 		}
 
