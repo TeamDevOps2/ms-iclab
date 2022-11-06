@@ -47,4 +47,5 @@ public class RestData {
 		response.setTotalRecovered(estado.getTotalRecovered());
 
 		return response;
+	}
 }
