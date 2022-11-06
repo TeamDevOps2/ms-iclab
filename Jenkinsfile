@@ -1,20 +1,17 @@
-def custom_msg()
-{
-  def JENKINS_URL= "https://2b7c-2800-150-122-43c-1d26-368f-4267-36a9.sa.ngrok.io/job/ms-iclab/job/feature-estado-pais/"
-  def JOB_NAME = env.JOB_NAME
-  def BUILD_ID= env.BUILD_ID
-  def JENKINS_LOG= " FAILED: Job [${env.JOB_NAME}] Logs path: ${JENKINS_URL}/job/${JOB_NAME}/${BUILD_ID}/consoleText"
-  return JENKINS_LOG
-}
 
 pipeline {
     agent any 
       stages {
         stage('Build') {
             steps {
+                try{
                 slackSend channel: '#builds-jenkins', color: 'good', message: 'Start job'
                 echo 'TODO: build'
                 bat 'mvnw clean compile -e'
+                }
+                catch{
+                    slackSend channel: '#builds-jenkins', color: 'danger', message: 'Fail job'
+                }
             }
         }
         stage('Test') {
