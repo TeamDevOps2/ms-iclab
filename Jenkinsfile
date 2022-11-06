@@ -24,7 +24,7 @@ pipeline {
         stage('Run') {
             steps {
                 echo 'TODO: run'
-                bat 'nohup bash mvnw spring-boot:run &'                      
+                bat 'mvnw spring-boot:run'                      
             }           
         }
         stage('Clean Workspace') {
