@@ -5,6 +5,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                slackSend channel: '#builds-jenkins', color: 'good', message: 'Start job'
                 echo 'TODO: build'
                 bat 'mvnw clean compile -e'
             }
@@ -30,7 +31,8 @@ pipeline {
         stage('Clean Workspace') {
             steps {     
                 cleanWs()
-            }           
+<<<<<<< HEAD
+=======
+                slackSend channel: '#builds-jenkins', color: 'good', message: 'Finish job'
         }
-    }
 }
