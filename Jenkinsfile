@@ -9,7 +9,7 @@ pipeline {
                 echo 'TODO: build'
                 bat 'mvnw clean compile -e'
                 }
-                catch{
+                catch(all){
                     slackSend channel: '#builds-jenkins', color: 'danger', message: 'Fail job'
                 }
             }
