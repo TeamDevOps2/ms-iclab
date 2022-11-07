@@ -5,9 +5,16 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                slackSend channel: '#builds-jenkins', color: 'good', message: 'Start job'
-                echo 'TODO: build'
-                bat 'mvnw clean compile -e'
+                script{
+                    try{
+                    slackSend channel: '#builds-jenkins', color: 'good', message: 'Start job'
+                    echo 'TODO: build'
+                    bat 'mvnw clean compile -e'
+                        }
+                    catch(all){
+                        slackSend channel: '#builds-jenkins', color: 'danger', message: 'Fail job'
+                        }
+                    }
             }
         }
         stage('Test') {
