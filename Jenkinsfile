@@ -1,3 +1,6 @@
+def JOB_NAME = env.JOB_NAME
+def BUILD_ID= env.BUILD_ID
+
 pipeline {
     agent any 
   
@@ -7,12 +10,12 @@ pipeline {
             steps {
                 script{
                     try{
-                    slackSend channel: '#builds-jenkins', color: 'good', message: 'Start job'
-                    echo 'TODO: build'
-                    bat 'mvnw clean compile -e'
+                        slackSend channel: '#builds-jenkins', color: 'good', message: 'Start job: ${env.JOB_NAME} ${env.BUILD_NUMBER}'
+                        echo 'TODO: build'
+                        bat 'mvnw clean compile -e'
                         }
                     catch(all){
-                        slackSend channel: '#builds-jenkins', color: 'danger', message: 'Fail job'
+                        slackSend channel: '#builds-jenkins', color: 'danger', message: 'Fail job: ${env.JOB_NAME} ${env.BUILD_NUMBER}'
                         }
                     }
             }
@@ -38,7 +41,7 @@ pipeline {
         stage('Clean Workspace') {
             steps {     
                 cleanWs()
-                slackSend channel: '#builds-jenkins', color: 'good', message: 'Finish job'
+                slackSend channel: '#builds-jenkins', color: 'good', message: 'Finish job: ${env.JOB_NAME} ${env.BUILD_NUMBER}'
             }           
         }
     }
