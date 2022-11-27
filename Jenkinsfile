@@ -13,7 +13,7 @@ pipeline {
 						slackSend channel: '#grupo2', color: 'good', message: "Start job: ${BRANCH_NAME} ${JOB_NAME} ${BUILD_NUMBER} SUCCESS"
 					}
 					catch(all) {
-						slackSend channel: '#grupo2', color: 'danger', message: "Fail job: ${BRANCH_NAME} ${JOB_NAME} ${BUILD_NUMBER} FAIL"
+						slackSend channel: '#grupo2', color: 'danger', message: "Fail Job: ${BRANCH_NAME}/${JOB_NAME}/${BUILD_NUMBER} Step: Build FAIL"
 					}
 				}	
 			}
@@ -27,7 +27,7 @@ pipeline {
 						}
 					}
 					catch(all) {
-						slackSend channel: '#grupo2', color: 'danger', message: "Fail job: ${BRANCH_NAME} ${JOB_NAME} ${BUILD_NUMBER} FAIL"
+						slackSend channel: '#grupo2', color: 'danger', message: "Fail Job: ${BRANCH_NAME}/${JOB_NAME}/${BUILD_NUMBER} Step: Sonar FAIL"
 					}
 				}
 			}
@@ -46,7 +46,7 @@ pipeline {
 								mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: "1.1.${BUILD_NUMBER}"]]]
 						}
 						catch(all) {
-							slackSend channel: '#grupo2', color: 'danger', message: "Fail job: ${BRANCH_NAME} ${JOB_NAME} ${BUILD_NUMBER} FAIL"
+							slackSend channel: '#grupo2', color: 'danger', message: "Fail Job: ${BRANCH_NAME}/${JOB_NAME}/${BUILD_NUMBER} Step: Publish to Nexus FAIL"
 						}
 					}
 				}
@@ -65,7 +65,7 @@ pipeline {
 						}
 					}
 					catch(all) {
-						slackSend channel: '#grupo2', color: 'danger', message: "Fail job: ${BRANCH_NAME} ${JOB_NAME} ${BUILD_NUMBER} FAIL"
+						slackSend channel: '#grupo2', color: 'danger', message: "Fail Job: ${BRANCH_NAME}/${JOB_NAME}/${BUILD_NUMBER} Step: Pull off nexus FAIL"
 					}
 				}
 			}
