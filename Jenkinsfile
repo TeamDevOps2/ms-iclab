@@ -4,59 +4,76 @@ pipeline {
     	maven 'Maven-3.8.6'
     }
     stages {
-		try {
-			stage('Build') {
-				steps {
+		
+		stage('Build') {
+			steps {
+				try {
 					script {
 						sh 'mvn clean install'
 						slackSend channel: '#grupo2', color: 'good', message: "Start job: ${BRANCH_NAME} ${JOB_NAME} ${BUILD_NUMBER} SUCCESS"
 					}	
 				}
+				catch(all) {
+					slackSend channel: '#grupo2', color: 'danger', message: "Fail job: ${BRANCH_NAME} ${JOB_NAME} ${BUILD_NUMBER} FAIL"
+				}
 			}
-			stage('Sonar') {
-				steps {
+		}
+		stage('Sonar') {
+			steps {
+				try {
 					script {      
 						withSonarQubeEnv('sonarqube') {
 							sh 'mvn clean package sonar:sonar -Dsonar.projectKey=lab-04 -Dsonar.java.binaries=build'
 						}
 					}
 				}
-			}
-			stage("Publish to Nexus Repository Manager") {
-				when {
-					expression{
-						"${BRANCH_NAME}"=='main'
-					}
+				catch(all) {
+					slackSend channel: '#grupo2', color: 'danger', message: "Fail job: ${BRANCH_NAME} ${JOB_NAME} ${BUILD_NUMBER} FAIL"
 				}
-				steps {
+			}
+		}
+		stage("Publish to Nexus Repository Manager") {
+			when {
+				expression{
+					"${BRANCH_NAME}"=='main'
+				}
+			}
+			steps {
+					try {
 						script {
 							nexusPublisher nexusInstanceId: 'Nexus-Repository', nexusRepositoryId: 'devops-usach-nexus', 
 								packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}/build/DevOpsUsach2020-0.0.1.jar"]],
 								mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: "1.1.${BUILD_NUMBER}"]]]
 						}
 					}
-			}  
-			stage('Pull the file off Nexus'){
-				when {
-					expression{
-						"${BRANCH_NAME}"=='main'
+					catch(all) {
+						slackSend channel: '#grupo2', color: 'danger', message: "Fail job: ${BRANCH_NAME} ${JOB_NAME} ${BUILD_NUMBER} FAIL"
 					}
 				}
-			steps{
-					withCredentials([usernameColonPassword(credentialsId: 'nexus-credencial-devops', variable: 'NEXUS_CREDENTIALS')]){
-					sh script: 'curl -u ${NEXUS_CREDENTIALS} -o DevOpsUsach2020-0.0.1.jar "http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar"'
+		}  
+		stage('Pull the file off Nexus'){
+			when {
+				expression{
+					"${BRANCH_NAME}"=='main'
 				}
 			}
-				
-			}      
-			stage('Clean Workspace') {
-				steps {
-					cleanWs()
+			steps{
+				try {
+					withCredentials([usernameColonPassword(credentialsId: 'nexus-credencial-devops', variable: 'NEXUS_CREDENTIALS')]){
+						sh script: 'curl -u ${NEXUS_CREDENTIALS} -o DevOpsUsach2020-0.0.1.jar "http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar"'
+					}
+				}
+				catch(all) {
+					slackSend channel: '#grupo2', color: 'danger', message: "Fail job: ${BRANCH_NAME} ${JOB_NAME} ${BUILD_NUMBER} FAIL"
 				}
 			}
 		}
-		catch(all) {
-			slackSend channel: '#grupo2', color: 'danger', message: "Fail job: ${BRANCH_NAME} ${JOB_NAME} ${BUILD_NUMBER} FAIL"
+			
+		      
+		stage('Clean Workspace') {
+			steps {
+				cleanWs()
+			}
 		}
     }
 }
