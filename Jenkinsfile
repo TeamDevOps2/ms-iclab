@@ -21,7 +21,7 @@ pipeline {
         stage('Sonar') {
             steps {
                  script {      
-				withSonarQubeEnv('Sonar') {
+				withSonarQubeEnv('sonarqube') {
 				sh 'mvn clean package sonar:sonar -Dsonar.projectKey=lab-04 -Dsonar.java.binaries=build'
                    }
                 }
