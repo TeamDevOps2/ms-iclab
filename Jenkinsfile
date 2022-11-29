@@ -70,7 +70,31 @@ pipeline {
 				}
 			}
 		}
-			
+		
+	    	stage('git push') {
+		    	when {
+				expression{
+					"${BRANCH_NAME}"=='develop'
+				}
+			}
+			steps {
+			withCredentials([
+			    gitUsernamePassword(credentialsId: 'github-token', gitToolName: 'Default')
+			]) {
+			   	//sh 'git config --global user.email "mabel.contreras182@gmail.com"'
+  				//sh 'git config --global user.name "Mabel Contreras"'
+				sh 'git tag -a "Release1.0.${BUILD_NUMBER}" -m "V1.0.${BUILD_NUMBER}"'
+				
+				//sh 'git checkout develop'
+				//sh 'git pull'
+				sh 'git fetch'
+				sh 'git checkout main'
+				sh 'git merge develop main'
+				//sh 'git commit -am "Merged develop branch to main"'
+				sh "git push origin main --tag"
+			}
+		    }
+		}
 		      
 		stage('Clean Workspace') {
 			steps {
