@@ -89,7 +89,7 @@ pipeline {
 				//sh 'git pull'
 				sh 'git remote update'
 				sh 'git fetch'
-				sh 'git checkout --track origin/main'
+				sh 'git checkout --track main'
 				sh 'git merge develop main'
 				sh 'git commit -am "Merged develop branch to main - ${BUILD_NUMBER}"'
 				sh "git push origin main --tag"
