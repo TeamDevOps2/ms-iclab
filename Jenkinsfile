@@ -22,7 +22,7 @@ pipeline {
 			steps {
 				script {      
 					try {
-						withSonarQubeEnv('sonarqube') {
+						withSonarQubeEnv('SonarTest') {
 							sh 'mvn clean package sonar:sonar -Dsonar.projectKey=lab-04 -Dsonar.java.binaries=build'
 						}
 					}
@@ -60,7 +60,7 @@ pipeline {
 			steps{
 				script {
 					try {
-						withCredentials([usernameColonPassword(credentialsId: 'nexus-credencial-devops', variable: 'NEXUS_CREDENTIALS')]){
+						withCredentials([usernameColonPassword(credentialsId: 'NexusKey', variable: 'NEXUS_CREDENTIALS')]){
 							sh script: 'curl -u ${NEXUS_CREDENTIALS} -o DevOpsUsach2020-0.0.1.jar "http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar"'
 						}
 					}
