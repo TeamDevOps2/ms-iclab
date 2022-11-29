@@ -87,7 +87,7 @@ pipeline {
 				
 				//sh 'git checkout develop'
 				//sh 'git pull'
-				sh 'git fetch'
+				sh 'git fetch origin'
 				sh 'git checkout main'
 				sh 'git merge develop main'
 				sh 'git commit -am "Merged develop branch to main - ${BUILD_NUMBER}"'
