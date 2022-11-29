@@ -83,7 +83,7 @@ pipeline {
 			]) {
 			   	sh 'git config --global user.email "opmalzahn@gmail.com"'
   				sh 'git config --global user.name "Oriana Pardo"'
-				sh 'git tag -a "Release1.0.${BUILD_NUMBER}" -m "V1.0.${BUILD_NUMBER}"'
+				sh 'git tag -a "Release1.0.1" -m "V1.0.1"'
 				sh 'git config --local --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/*'
 				
 				//sh 'git checkout develop'
@@ -91,7 +91,7 @@ pipeline {
 				sh 'git fetch origin'
 				sh 'git checkout main'
 				sh 'git merge origin/develop main'
-				sh 'git commit -am "Merged develop branch to main - ${BUILD_NUMBER}"'
+				//sh 'git commit -am "Merged develop branch to main - ${BUILD_NUMBER}"'
 				sh "git push origin main --tag"
 			}
 		    }
