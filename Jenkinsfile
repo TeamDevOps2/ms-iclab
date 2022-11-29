@@ -81,8 +81,8 @@ pipeline {
 			withCredentials([
 			    gitUsernamePassword(credentialsId: 'gitHubKey', gitToolName: 'Default')
 			]) {
-			   	//sh 'git config --global user.email "mabel.contreras182@gmail.com"'
-  				//sh 'git config --global user.name "Mabel Contreras"'
+			   	sh 'git config --global user.email "opmalzahn@gmail.com"'
+  				sh 'git config --global user.name "Oriana Pardo"'
 				sh 'git tag -a "Release1.0.${BUILD_NUMBER}" -m "V1.0.${BUILD_NUMBER}"'
 				
 				//sh 'git checkout develop'
